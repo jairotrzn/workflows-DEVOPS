@@ -1,0 +1,28 @@
+services:
+  miservicio_mysql:
+    restart: always
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE= example
+      - MYSQL_ROOT_PASSWORD= jairo
+      - MYSQL_USER= jairo
+      - MYSQL_PASSWORD= jairo
+    volumes:
+      # Montamos un volumen para MySQL para no perder los datos de bd
+      - ./volumenes/mysql:/var/lib/mysql
+    expose:
+      - 3306
+  microservicio:
+    restart: always
+    image: registry.pedroclemente.cloud:9443/microservicio-jjmorae-exam2t
+    ports: 
+    - "3000:3000"
+    environment:
+      MYSQLDB_HOST: mysql
+      MYSQLDB_USER: jairo
+      MYSQLDB_PASSWORD: jairo
+      MYSQLDB_PORT: 3306
+    volumes:
+      - ./main:/main
+      - ./a2auth:/a2auth
+  
